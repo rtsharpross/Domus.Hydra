@@ -1,10 +1,25 @@
-﻿namespace Domus.Hydra.Keys
+﻿using Domus.Hydra.Utils;
+
+namespace Domus.Hydra.Keys
 {
     public record class BaseKey
     {
         public BaseKey(string value)
         {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+            if (string.IsNullOrEmpty(value))
+            {
+                ThrowHelper.ArgumentNull(value);
+            }
+
+            if (value.Length >= Constants.KEY_max_length)
+            {
+                ThrowHelper.InvalidKeyNameLength(value);
+            }
+
+            if (value.HasForbiddenSymbols())
+            {
+                ThrowHelper.HasForbiddenSymbols(value);
+            }
 
             _value = $"{Constants.KEY_open}{value}{Constants.KEY_close}";
         }
