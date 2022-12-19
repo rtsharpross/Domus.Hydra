@@ -1,4 +1,6 @@
-﻿namespace Domus.Hydra.Utils
+﻿using Domus.Hydra.Keys;
+
+namespace Domus.Hydra.Utils
 {
     internal static class Constants
     {
@@ -20,6 +22,8 @@
 
         #region Scheduler
         public const string DEFAULT_scheduler_name = "default";
+
+        public const string All = "All";
         #endregion
     }
 }

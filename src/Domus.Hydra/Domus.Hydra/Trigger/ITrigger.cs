@@ -6,8 +6,14 @@ namespace Domus.Hydra.Trigger
     {
         TriggerKey Key { get; }
 
-        bool Enabled { get; }
+        /// <summary>
+        /// Вкл/Выкл
+        /// </summary>
+        bool IsEnabled { get; }
 
-        bool Applicable { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /*bool Applicable { get; }*/
     }
 }

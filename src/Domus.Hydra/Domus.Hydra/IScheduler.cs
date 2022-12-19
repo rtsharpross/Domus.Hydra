@@ -1,5 +1,5 @@
-﻿using Domus.Hydra.Context;
-using Domus.Hydra.Job;
+﻿using Domus.Hydra.Bus;
+using Domus.Hydra.Context;
 using Domus.Hydra.Keys;
 using Domus.Hydra.Services;
 
@@ -7,14 +7,18 @@ namespace Domus.Hydra
 {
     public interface IScheduler
     {
+        string Name { get; }
+
         int ConcurrencyLevel { get; }
 
-        JobFacade Jobs { get; }
+        bool IsRunning { get; }
 
-        TriggerFacade Triggers { get; }
+        void Stop();
+        void Start();
 
         void Run(JobKey jobKey, IContext? context = null);
-
         void Run(IEnumerable<JobKey> jobKeys);
+
+        //void AddConsumer<T>(T consumer) where T : ITriggerConsumer;
     }
 }

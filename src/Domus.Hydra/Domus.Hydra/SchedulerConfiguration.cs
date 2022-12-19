@@ -1,4 +1,5 @@
-﻿using Domus.Hydra.Utils;
+﻿using Domus.Hydra.Storage;
+using Domus.Hydra.Utils;
 
 namespace Domus.Hydra
 {
@@ -6,15 +7,25 @@ namespace Domus.Hydra
     {
         public SchedulerConfiguration()
         {
-            this.TaskScheduler = TaskScheduler.Current;
-            this.ConccurencyLevel = 0;
-            this.Name = Constants.DEFAULT_scheduler_name;
+            
         }
 
-        public readonly TaskScheduler TaskScheduler;
+        public TaskScheduler TaskScheduler;
 
-        public readonly int ConccurencyLevel;
+        public int ConccurencyLevel;
 
-        public readonly string Name;
+        public string Name;
+
+        public IStorageConfiguration StorageConfiguration;
+
+        private static readonly SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration()
+        {
+            ConccurencyLevel = 4,
+            Name = Constants.DEFAULT_scheduler_name,
+            TaskScheduler = TaskScheduler.Current,
+            StorageConfiguration = new MemmoryStorageConfiguration()
+        };
+
+        public static SchedulerConfiguration Default => defaultConfiguration;
     }
 }

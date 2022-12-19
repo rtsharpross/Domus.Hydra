@@ -2,6 +2,8 @@
 {
     public interface IContext
     {
-        bool Get<T>(string key, out T result);
+        bool TryGet<T>(string key, out T result);
+
+        Task<T?> TryGetAsync<T>(string key);
     }
 }

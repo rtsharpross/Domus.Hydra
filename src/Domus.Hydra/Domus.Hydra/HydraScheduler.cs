@@ -1,32 +1,58 @@
-﻿using Domus.Hydra.Context;
+﻿using Domus.Hydra.Bus;
+using Domus.Hydra.Context;
 using Domus.Hydra.Keys;
 using Domus.Hydra.Services;
+using Domus.Hydra.Trigger;
 
 namespace Domus.Hydra
 {
-    public sealed class HydraScheduler : IScheduler
+    internal sealed class HydraScheduler : IScheduler
     {
-        public HydraScheduler(SchedulerConfiguration configuration)
+        public HydraScheduler(SchedulerContainer container, SchedulerConfiguration configuration)
         {
-            Jobs = new JobFacade();
-            Triggers = new TriggerFacade();
+            instanceKey = new InstanceKey(configuration.Name);
+            engine = new TaskSchedulerEngine(configuration);
+            producer = new LocalTriggerProducer(instanceKey);
         }
 
-        private readonly int _concurrencyLevel;
-        public int ConcurrencyLevel => _concurrencyLevel;
+        public string Name => instanceKey.ToString();
+        public int ConcurrencyLevel => engine.CurrentConcurrency;
+        public bool IsRunning => engine.IsRun;
 
-        public JobFacade Jobs { get; }
+        private readonly InstanceKey instanceKey;
+        private readonly LocalTriggerProducer producer;
+        private readonly ISchedulerEngine engine;
 
-        public TriggerFacade Triggers { get; }
-
-        public void Run(JobKey jobKey, IContext? context = null)
+        /*public void AddConsumer<T>(T consumer) where T : ITriggerConsumer
         {
-            
-        }
+            throw new NotImplementedException();
+        }*/
+
+        public void Run(JobKey jobKey, IContext? context = null) => producer.Send(TriggerKeyContextPair.Build());
 
         public void Run(IEnumerable<JobKey> jobKeys)
         {
-            
+            var triggers = new List<TriggerKey>();
+
+            foreach(var jobKey in jobKeys)
+            {
+                triggers.Add(new RequestedTrigger(jobKey));
+            }
+        }
+
+        public void Start() => engine.Start();
+
+        public void Stop() => engine.Interrupt();
+
+        public void Bind(SchedulerServiceBus serviceBus)
+        {
+            serviceBus.AddProducer(producer);
+        }
+
+        public void Unbind(SchedulerServiceBus serviceBus)
+        {
+            serviceBus.AddProducer(producer);
+            //serviceBus.AddConsumer(engine.Consumer);
         }
     }
 }

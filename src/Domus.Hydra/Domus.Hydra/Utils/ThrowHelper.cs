@@ -21,7 +21,19 @@ namespace Domus.Hydra.Utils
         [DoesNotReturn]
         public static void HasForbiddenSymbols(string value) => Throw(value);
 
+
         public static void JobNotFound(JobKey jobKey) => Throw($"Job by key '{jobKey.ToString()}' not found.");
+
+        public static Exception JobNotFoundException(JobKey key)
+        {
+            throw new NotImplementedException();
+        }
+
+        [DoesNotReturn]
+        public static ArgumentNullException ArgumentNullException(string name)
+        {
+            throw new NotImplementedException(name);
+        }
         #endregion
     }
 }

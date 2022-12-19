@@ -1,4 +1,4 @@
-﻿namespace Domus.Hydra.Job
+﻿namespace Domus.Hydra.Storage.Records
 {
     public enum JobActionKind : byte
     {

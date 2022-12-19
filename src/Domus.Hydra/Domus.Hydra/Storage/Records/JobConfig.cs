@@ -1,5 +1,8 @@
-﻿namespace Domus.Hydra.Job
+﻿using Domus.Hydra.Context;
+
+namespace Domus.Hydra.Storage.Records
 {
+    [Serializable]
     public sealed class JobConfig
     {
         public JobConfig()
@@ -23,5 +26,7 @@
         /// Default: false
         /// </summary>
         public bool MultipleExecution { get; set; } = false;
+
+        public IContext Context { get; }
     }
 }

@@ -33,13 +33,13 @@ namespace Domus.Hydra.Keys
     {
         public BaseKey(T parent, string value) : base(value)
         {
-            if (parent == null) throw new ArgumentNullException("value");
+            if (parent == null) throw new ArgumentNullException(nameof(value));
 
-            _parent = parent;
+            Parent = parent;
         }
 
-        private readonly T _parent;
+        public readonly T Parent;
 
-        public override string? ToString() => $"{_parent}{Constants.KEY_sepatator}{base.ToString()}";
+        public override string? ToString() => $"{Parent}{Constants.KEY_sepatator}{base.ToString()}";
     }
 }
